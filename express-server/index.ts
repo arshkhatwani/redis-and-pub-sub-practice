@@ -22,6 +22,7 @@ app.post("/submit", async (req, res) => {
             JSON.stringify({ code, language, problemId })
         );
 
+        console.log("Submission sent to redis");
         res.send("Submission received!");
     } catch (error) {
         console.error("Unable to process submission", error);
