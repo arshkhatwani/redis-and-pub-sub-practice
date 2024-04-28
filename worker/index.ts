@@ -2,11 +2,16 @@ import { createClient } from "redis";
 
 const client = createClient();
 
-async function publishSubmission(problemId: string, status: string) {
+async function publishSubmission(
+    problemId: string,
+    status: string,
+    language: string,
+    code: string
+) {
     try {
         await client.publish(
             "problems_done",
-            JSON.stringify({ problemId, status })
+            JSON.stringify({ problemId, status, language, code })
         );
         console.log("Published submission to topic: problems_done!");
     } catch (err) {
@@ -22,7 +27,7 @@ async function processSubmission(submission: string) {
     console.log(`Language: ${language}`);
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    await publishSubmission(problemId, "TLE");
+    await publishSubmission(problemId, "Accepted", language, code);
 
     console.log(`Finished processing for problem id: ${problemId}`);
 }
